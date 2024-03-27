@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "ac12a228-ab26-4bca-8225-4472124c9c1c",
+		"name": "Taller_Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33598832",
+		"_collection_link": "https://blue-crescent-789261.postman.co/workspace/New-Team-Workspace~ff3a1720-5966-4902-9a99-41fe06535870/collection/33598832-ac12a228-ab26-4bca-8225-4472124c9c1c?action=share&source=collection_link&creator=33598832"
+	},
+	"item": [
+		{
+			"name": "mostrar carros",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "mostrar carro po id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "agregar carro",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "actualizar carro por id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "eliminar carro pot id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "mostrar pdf",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
