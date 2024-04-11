@@ -2,14 +2,24 @@ const express = require('express');
 const app = express();
 const PDFDocument = require('pdfkit');
 const fs = require('fs')
-const { readFileSync ,escribirArchivo} = require('./file') 
+const { readFileSync ,escribirArchivo} = require('./file.js') 
+const path = require('path');
+const Joi = require('joi');
 
-// Resto del código de tu aplicación
+const viewsPath = path.join(__dirname, 'src', 'views');
+const publicPath = path.join(__dirname, 'src', 'public');
 
-const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
-
+// Middleware para servir archivos estáticos
+app.use(express.static(publicPath));
+const PORT = process.env.PORT || 3000;
+// Ruta para manejar la petición GET a la raíz del servidor
+app.get('/', (req, res) => {
+  // Envía la respuesta con el contenido HTML
+  res.sendFile(path.join(viewsPath, 'index.html'));
+});
 
 
 //metodo para obtener todos los carros
@@ -28,7 +38,7 @@ app.get('/carros/:id', (req, res) => {
   //no existe
   if (!carro){
       res.status(404).send('El carro no existe')
-      return
+      returnn
   }
   //existe
   res.send(carro)
@@ -52,20 +62,46 @@ app.post('/carro', (req, res) => {
 
 //metodo para actualizar un carro por id
 app.put('/carro/:id', (req, res) => {
-  const id = req.params.id
-  const carros = readFileSync('./db.json')
-  const carro = carros.find(carro => carro.id === parseInt (id))
-  if (!carro){
-      res.status(404).send('El carro no existe')
-      return
-  }
-  const index = carros.indexOf(carro)
-  const carroActualizado = req.body
-  carros[index] = carroActualizado
-  escribirArchivo('./db.json', carros)
-  res.send(carroActualizado)
-})
+  const id = req.params.id;
 
+  // Definir esquema Joi para validar los datos de entrada
+  const schema = Joi.object({
+      // Aquí defines las propiedades que esperas en el cuerpo de la solicitud y sus respectivas validaciones
+      // Por ejemplo, si esperas una propiedad 'marca' en el cuerpo de la solicitud:
+      marca: Joi.string().required(),
+      modelo: Joi.string().required(),
+      año: Joi.number().integer().min(1900).max((new Date()).getFullYear()).required(),
+      // Puedes agregar más validaciones según tus necesidades
+  });
+
+  // Validar los datos de entrada
+  const { error, value } = schema.validate(req.body);
+
+  // Si hay un error en la validación, responder con un error 400
+  if (error) {
+      res.status(400).send(error.details[0].message);
+      return;
+  }
+
+  // Continuar con el resto del código si los datos son válidos
+  const carros = readFileSync('./db.json');
+  const carro = carros.find(carro => carro.id === parseInt(id));
+
+  // Si no existe el carro
+  if (!carro) {
+      res.status(404).send('El carro no existe');
+      return;
+  }
+
+  // Actualizar el carro
+  const index = carros.indexOf(carro);
+  const carroActualizado = { ...carro, ...value }; // Usamos 'value' que contiene los datos validados
+  carros[index] = carroActualizado;
+
+  // Escribir en el archivo
+  escribirArchivo('./db.json', carros);
+  res.send(carroActualizado);
+});
 
 
 //metodo para eliminar un carro por id
