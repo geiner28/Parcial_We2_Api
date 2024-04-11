@@ -11,3 +11,15 @@
 10 04 2024 09:00:47 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
 10 04 2024 09:01:03 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
 10 04 2024 09:01:50 [PUT] /carros/actualizar {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:13:30 [PUT] /carros/actualizar {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:15:00 [PUT] /carros/actualizar {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:15:22 [PUT] /carros/actualizar {} {} ::1
+10 04 2024 09:15:51 [PUT] /carros/actualizar {} {} ::1
+10 04 2024 09:32:26 [GET] /carros?filtro=marca&valor=toyota {"filtro":"marca","valor":"toyota"} {} ::1
+10 04 2024 09:32:39 [GET] /carros?filtro=marca&valor=mazda {"filtro":"marca","valor":"mazda"} {} ::1
+10 04 2024 09:34:36 [GET] /carro {} {"marca":"bmx","modelo":"x6 m","año":"2020"} ::1
+10 04 2024 09:34:49 [POST] /carro {} {"marca":"bmx","modelo":"x6 m","año":"2020"} ::1
+10 04 2024 09:36:45 [PUT] /carro/2 {} {"año":"2020"} ::1
+10 04 2024 09:37:18 [PUT] /carro/2 {} {"marca":"bmw","modelo":"x6 m","año":"2020"} ::1
+10 04 2024 09:38:38 [GET] /carro/lista_carros.pdf {} {} ::1
+10 04 2024 09:38:55 [GET] /lista_carros.pdf {} {} ::1

@@ -67,7 +67,7 @@ const agregarCreatedAt = (req, res, next) => {
 
 
 
-
+// la peticion se debe mandar en este formaro http://localhost:3000/carros?filtro=marca&valor=toyota
 //2 punto  metodo para obtener todos los carros
 app.get('/carros', (req, res) => {
   const carros = readFileSync('./db.json');
@@ -99,7 +99,7 @@ app.get('/carros', (req, res) => {
 
 
 // 1 punto metodo para agregar un carro a la lista de carros y validar los datos de entrada con Joi  
-// la peticion se debe mandar en este formaro http://localhost:3000/carros?filtro=marca&valor=toyota
+
 
 app.post('/carro',agregarCreatedAt, (req, res) => {
   // Definir esquema Joi para validar los datos de entrada
