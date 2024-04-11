@@ -8,9 +8,10 @@ const Joi = require('joi');
 
 const viewsPath = path.join(__dirname, 'src', 'views');
 const publicPath = path.join(__dirname, 'src', 'public');
-
-
 app.use(express.json());
+
+
+
 
 // Middleware para servir archivos estáticos
 app.use(express.static(publicPath));
@@ -22,28 +23,33 @@ app.get('/', (req, res) => {
 });
 
 
-//metodo para obtener todos los carros
-app.get('/carros', (req, res) => {  
-  const carros = readFileSync('./db.json')
-  res.send(carros)
-})
 
 
-// metodo para obtener informacion de un carro por id
-app.get('/carros/:id', (req, res) => {
-  const id = req.params.id
-  const carros = readFileSync('./db.json')
-  const carro = carros.find(carro => carro.id === parseInt (id))
-  
-  //no existe
-  if (!carro){
-      res.status(404).send('El carro no existe')
-      returnn
+
+//2 punto  metodo para obtener todos los carros
+app.get('/carros', (req, res) => {
+  const carros = readFileSync('./db.json');
+
+  // Verificar si se proporcionó un query parameter para filtrar los registros
+  const filtro = req.query.filtro;
+  const valor = req.query.valor;
+
+  if (filtro) {
+    // Filtrar los registros por el valor especificado en la propiedad indicada
+    const carrosFiltrados = carros.filter(carro => carro[filtro] == valor);
+
+    if (carrosFiltrados.length === 0) {
+      // Si no se encuentran registros que coincidan con el filtro, enviar todos los registros
+      res.send(carros);
+    } else {
+      // Si se encuentran registros que coinciden con el filtro, enviar los registros filtrados
+      res.send(carrosFiltrados);
+    }
+  } else {
+    // Si no se proporcionó un query parameter, enviar todos los registros
+    res.send(carros);
   }
-  //existe
-  res.send(carro)
-  
-  })
+});
 
 
 
