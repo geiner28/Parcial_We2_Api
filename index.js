@@ -8,6 +8,7 @@ const Joi = require('joi');
 const moment = require('moment');
 
 const fs = require('fs');
+const { create } = require('domain');
 const viewsPath = path.join(__dirname, 'src', 'views');
 const publicPath = path.join(__dirname, 'src', 'public');
 app.use(express.json()); 
@@ -43,6 +44,22 @@ app.use((req, res, next) => {
 
 
 
+// Middleware para agregar created_at al cuerpo de la solicitud
+const agregarCreatedAt = (req, res, next) => {
+  if (!req.body.created_at) {
+    req.body.created_at = moment().format('YYYY-MM-DD hh:mm');
+  }
+  next();
+};
+
+
+
+
+
+
+
+
+
 
 //2 punto  metodo para obtener todos los carros
 app.get('/carros', (req, res) => {
@@ -70,12 +87,6 @@ app.get('/carros', (req, res) => {
 });
 
 
-// Middleware para agregar el campo 'created_at' al body de la solicitud
-const agregarCreatedAt = (req, res, next) => {
-  req.body.created_at = moment().format('YYYY-MM-DD hh:mm');
-  next();
-};
-
 
 
 
@@ -91,6 +102,7 @@ app.post('/carro',agregarCreatedAt, (req, res) => {
       marca: Joi.string().required(),
       modelo: Joi.string().required(),
       año: Joi.number().integer().min(1900).max((new Date()).getFullYear()).required(),
+      created_at: Joi.string().required(),
       // Puedes agregar más validaciones según tus necesidades
   });
 
@@ -137,7 +149,7 @@ app.post('/carro',agregarCreatedAt, (req, res) => {
 
 
 //    1 punto metodo para actualizar un carro por id y validar los datos de entrada con Joi
-app.put('/carro/:id', (req, res) => {
+app.put('/carro/:id', agregarCreatedAt,(req, res) => {
   const id = req.params.id;
 
   // Definir esquema Joi para validar los datos de entrada
@@ -147,6 +159,7 @@ app.put('/carro/:id', (req, res) => {
       marca: Joi.string().required(),
       modelo: Joi.string().required(),
       año: Joi.number().integer().min(1900).max((new Date()).getFullYear()).required(),
+      created_at: Joi.string().required(),
       // Puedes agregar más validaciones según tus necesidades
   });
 
