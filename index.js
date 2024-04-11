@@ -45,22 +45,59 @@ app.get('/carros/:id', (req, res) => {
   
   })
 
-//metodo para agregar un carro a la lista de cas
 
+
+
+
+// 1 punto metodo para agregar un carro a la lista de carros y validar los datos de entrada con Joi  
 app.post('/carro', (req, res) => {
-  const carro = req.body
-  const carros = readFileSync('./db.json') 
-  carro.id = carros.length + 1    
-  carros.push(carro)
-  //escribir arcihvo  
-  escribirArchivo('./db.json', carros)
-  res.status(201).send(carros)
+  // Definir esquema Joi para validar los datos de entrada
+  const schema = Joi.object({
+      // Define las propiedades que esperas en el cuerpo de la solicitud y sus respectivas validaciones
+      // Por ejemplo, si esperas propiedades 'marca', 'modelo' y 'año' en el cuerpo de la solicitud:
+      marca: Joi.string().required(),
+      modelo: Joi.string().required(),
+      año: Joi.number().integer().min(1900).max((new Date()).getFullYear()).required(),
+      // Puedes agregar más validaciones según tus necesidades
+  });
+
+  // Validar los datos de entrada
+  const { error, value } = schema.validate(req.body);
+
+  // Si hay un error en la validación, responder con un error 400
+  if (error) {
+      res.status(400).send(error.details[0].message);
+      return;
+  }
+
+  // Continuar con el resto del código si los datos son válidos
+  const carro = value; // Usamos 'value' que contiene los datos validados
+
+  // Leer la lista de carros desde el archivo
+  const carros = readFileSync('./db.json');
+
+  // Agregar el nuevo carro a la lista
+  carro.id = carros.length + 1; // Asignamos un nuevo ID al carro
+  carros.push(carro);
+
+  // Escribir la lista de carros actualizada en el archivo
+  escribirArchivo('./db.json', carros);
+
+  // Responder con el carro agregado y un código de estado 201 (Created)
+  res.status(201).send(carro);
+});
 
 
-})
 
 
-//metodo para actualizar un carro por id
+
+
+
+
+
+
+
+//    1 punto metodo para actualizar un carro por id y validar los datos de entrada con Joi
 app.put('/carro/:id', (req, res) => {
   const id = req.params.id;
 
@@ -102,6 +139,12 @@ app.put('/carro/:id', (req, res) => {
   escribirArchivo('./db.json', carros);
   res.send(carroActualizado);
 });
+
+
+
+
+
+
 
 
 //metodo para eliminar un carro por id
