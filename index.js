@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
 const PDFDocument = require('pdfkit');
-const fs = require('fs')
+
 const { readFileSync ,escribirArchivo} = require('./file.js') 
 const path = require('path');
 const Joi = require('joi');
 const moment = require('moment');
 
+const fs = require('fs');
 const viewsPath = path.join(__dirname, 'src', 'views');
 const publicPath = path.join(__dirname, 'src', 'public');
 app.use(express.json()); 
@@ -17,11 +18,27 @@ app.use(express.json());
 // Middleware para servir archivos estáticos
 app.use(express.static(publicPath));
 const PORT = process.env.PORT || 3000;
-// Ruta para manejar la petición GET a la raíz del servidor
-app.get('/', (req, res) => {
-  // Envía la respuesta con el contenido HTML
-  res.sendFile(path.join(viewsPath, 'index.html'));
+
+
+
+
+
+
+
+// 4 punto Middleware para registrar las solicitudes HTTP en el archivo access_log.txt
+app.use((req, res, next) => {
+  const logLine = `${new Date().toISOString()} - ${req.method} ${req.url}\n`;
+
+  // Agregar la línea al archivo access_log.txt
+  fs.appendFile('access_log.txt', logLine, (err) => {
+    if (err) {
+      console.error('Error al escribir en el archivo access_log.txt:', err);
+    }
+  });
+
+  next();
 });
+
 
 
 
@@ -53,6 +70,11 @@ app.get('/carros', (req, res) => {
 });
 
 
+// Middleware para agregar el campo 'created_at' al body de la solicitud
+const agregarCreatedAt = (req, res, next) => {
+  req.body.created_at = moment().format('YYYY-MM-DD hh:mm');
+  next();
+};
 
 
 
@@ -61,7 +83,7 @@ app.get('/carros', (req, res) => {
 // 1 punto metodo para agregar un carro a la lista de carros y validar los datos de entrada con Joi  
 // la peticion se debe mandar en este formaro http://localhost:3000/carros?filtro=marca&valor=toyota
 
-app.post('/carro', (req, res) => {
+app.post('/carro',agregarCreatedAt, (req, res) => {
   // Definir esquema Joi para validar los datos de entrada
   const schema = Joi.object({
       // Define las propiedades que esperas en el cuerpo de la solicitud y sus respectivas validaciones
@@ -97,6 +119,12 @@ app.post('/carro', (req, res) => {
   // Responder con el carro agregado y un código de estado 201 (Created)
   res.status(201).send(carro);
 });
+
+
+
+
+
+
 
 
 
@@ -176,7 +204,6 @@ app.put('/carros/actualizar', (req, res) => {
 
   res.send(carrosActualizados);
 });
-
 // como mandar la peticion http://localhost:3000/carros/actualizar
 
 
@@ -198,6 +225,18 @@ app.delete('/carro/:id', (req, res) => {
   res.send("el carro"+ id + "fue eliminado")
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
