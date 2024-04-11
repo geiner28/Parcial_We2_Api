@@ -5,10 +5,11 @@ const fs = require('fs')
 const { readFileSync ,escribirArchivo} = require('./file.js') 
 const path = require('path');
 const Joi = require('joi');
+const moment = require('moment');
 
 const viewsPath = path.join(__dirname, 'src', 'views');
 const publicPath = path.join(__dirname, 'src', 'public');
-app.use(express.json());
+app.use(express.json()); 
 
 
 
@@ -55,7 +56,11 @@ app.get('/carros', (req, res) => {
 
 
 
+
+
 // 1 punto metodo para agregar un carro a la lista de carros y validar los datos de entrada con Joi  
+// la peticion se debe mandar en este formaro http://localhost:3000/carros?filtro=marca&valor=toyota
+
 app.post('/carro', (req, res) => {
   // Definir esquema Joi para validar los datos de entrada
   const schema = Joi.object({
@@ -148,6 +153,31 @@ app.put('/carro/:id', (req, res) => {
 
 
 
+
+
+
+// 3 punto metodo para actualizar el campo 'updated_at' en todos los registros
+app.put('/carros/actualizar', (req, res) => {
+  const carros = readFileSync('./db.json');
+
+  // Obtener la fecha y hora actual en formato YYYY-MM-DD hh:mm
+  const fechaActual = moment().format('YYYY-MM-DD hh:mm');
+
+  // Recorrer todos los registros y actualizar el campo 'updated_at' si está vacío
+  const carrosActualizados = carros.map(carro => {
+    if (!carro.updated_at) {
+      carro.updated_at = fechaActual;
+    }
+    return carro;
+  });
+
+  // Escribir en el archivo
+  escribirArchivo('./db.json', carrosActualizados);
+
+  res.send(carrosActualizados);
+});
+
+// como mandar la peticion http://localhost:3000/carros/actualizar
 
 
 
