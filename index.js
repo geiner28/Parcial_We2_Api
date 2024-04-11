@@ -27,24 +27,31 @@ const PORT = process.env.PORT || 3000;
 
 
 // 4 punto Middleware para registrar las solicitudes HTTP en el archivo access_log.txt
-app.use((req, res, next) => {
-  const logLine = `${new Date().toISOString()} - ${req.method} ${req.url}\n`;
+function registrarSolicitud(req, res, next) {
+  const fecha = moment().format('DD MM YYYY hh:mm:ss');
+  const metodo = req.method;
+  const url = req.url;
+  const query = JSON.stringify(req.query);
+  const body = JSON.stringify(req.body);
+  const ip = req.ip;
 
-  // Agregar la línea al archivo access_log.txt
-  fs.appendFile('access_log.txt', logLine, (err) => {
+  const linea = `${fecha} [${metodo}] ${url} ${query} ${body} ${ip}\n`;
+
+  fs.appendFile('access_log.txt', linea, (err) => {
     if (err) {
-      console.error('Error al escribir en el archivo access_log.txt:', err);
+      console.error(err);
     }
   });
 
   next();
-});
+}
+
+app.use(registrarSolicitud);
 
 
 
 
-
-// Middleware para agregar created_at al cuerpo de la solicitud
+// 5 punto Middleware para agregar created_at al cuerpo de la solicitud
 const agregarCreatedAt = (req, res, next) => {
   if (!req.body.created_at) {
     req.body.created_at = moment().format('YYYY-MM-DD hh:mm');

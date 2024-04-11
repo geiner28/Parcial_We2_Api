@@ -1,22 +1,13 @@
-
-
-2024-04-11T01:12:12.763Z - GET /carros?filtro=a%C3%B1o&valor=2000
-2024-04-11T01:15:19.099Z - GET /carros/1
-2024-04-11T01:15:25.323Z - GET /carro/1
-2024-04-11T01:17:13.759Z - GET /carros
-2024-04-11T01:23:40.641Z - PUT /carro/2
-2024-04-11T01:25:34.386Z - PUT /carro/2
-2024-04-11T01:26:18.790Z - PUT /carro/2
-2024-04-11T01:26:54.954Z - PUT /carro/1
-2024-04-11T01:28:37.189Z - POST /carro
-2024-04-11T01:28:44.706Z - POST /carro
-2024-04-11T01:28:51.778Z - POST /carro
-2024-04-11T01:30:48.277Z - POST /carro
-2024-04-11T01:38:06.548Z - POST /carros
-2024-04-11T01:38:30.568Z - POST /carro
-2024-04-11T01:40:26.640Z - POST /carro
-2024-04-11T01:42:54.934Z - POST /carro
-2024-04-11T01:44:20.557Z - PUT /carro/6
-2024-04-11T01:44:30.203Z - PUT /carro/6
-2024-04-11T01:45:02.465Z - PUT /carro/6
-2024-04-11T01:45:21.566Z - PUT /carro/6
+10 04 2024 08:56:44 [PUT] /carro/1 {} {"marca":"huyndady","modelo":"ids5556","año":"2004"} ::1
+10 04 2024 08:56:55 [PUT] /carro/6 {} {"marca":"huyndady","modelo":"ids5556","año":"2004"} ::1
+10 04 2024 08:58:01 [POST] /carro {} {"marca":"huyndady","modelo":"ids5556","año":"2004"} ::1
+10 04 2024 08:59:02 [POST] /carro {} {"marca":"huyndady","modelo":"ids5556","año":"2067"} ::1
+10 04 2024 08:59:17 [POST] /carro {} {"marca":"huyndady","modelo":1,"año":"2033"} ::1
+10 04 2024 08:59:29 [POST] /carro {} {"marca":8,"modelo":"i","año":"2033"} ::1
+10 04 2024 08:59:48 [POST] /carro {} {"marca":"mazda","modelo":"cbi","año":"2003"} ::1
+10 04 2024 09:00:09 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:00:25 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2033"} ::1
+10 04 2024 09:00:38 [PUT] /carro/2 {} {"marca":"mazda","modelo":4,"año":"2024"} ::1
+10 04 2024 09:00:47 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:01:03 [PUT] /carro/2 {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
+10 04 2024 09:01:50 [PUT] /carros/actualizar {} {"marca":"mazda","modelo":"cbi","año":"2024"} ::1
